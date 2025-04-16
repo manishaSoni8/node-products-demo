@@ -10,9 +10,8 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const compression = require('compression');
+
+
  
 const errorController = require('./controllers/error');
 const shopController = require('./controllers/shop');
@@ -62,11 +61,9 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
  
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+
  
-app.use(helmet());
-app.use(compression());
-app.use(morgan('combined', { stream: accessLogStream }));
+
  
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single('image'));
@@ -135,15 +132,10 @@ app.use((error, req, res, next) => {
  
 // Connect to DB and start server
 mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    ssl: true // Important for MongoDB Atlas on Render
-  })
-  .then(() => {
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+  .connect(MONGODB_URI)
+  .then(result => {
+    app.listen(process.env.PORT || 3000);
   })
   .catch(err => {
-    console.error('DB connection failed:', err);
+    console.log(err);
   });
