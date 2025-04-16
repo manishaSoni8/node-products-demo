@@ -1,5 +1,6 @@
 const path = require('path');
 
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -15,8 +16,9 @@ const errorController = require('./controllers/error');
 const shopController = require('./controllers/shop');
 const isAuth = require('./middleware/is-auth');
 const User = require('./models/user');
+
 const MONGODB_URI =
-  "mongodb+srv://sonimanisha2003:HR0EepKG0L1djLS0@nodejs.2g1go.mongodb.net/shop";
+  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodejs.2g1go.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}`;
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -122,7 +124,8 @@ app.use(errorController.get404);
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
+    console.log(`listening at port ${process.env.PORT}`)
   })
   .catch(err => {
     console.log(err);
