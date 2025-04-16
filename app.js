@@ -17,8 +17,7 @@ const shopController = require('./controllers/shop');
 const isAuth = require('./middleware/is-auth');
 const User = require('./models/user');
 
-const MONGODB_URI =
-  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodejs.2g1go.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}`;
+const MONGODB_URI = 'mongodb+srv://sonimanisha2003:XR6QEHeRUUh75i5Z@cluster0.gnk6szj.mongodb.net/'
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
