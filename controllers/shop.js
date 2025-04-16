@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-const stripe = require('stripe')(process.env.STRIPE_KEY);
+const stripe = require('stripe')('sk_test_51RE32gQ7vFd2LYtfH8oUfRKFe6Xp2J9X3SxbAopjs1UpNCfqUb2Yg22zevA7HJCrzs0wKF4in604YKpYbAn2XeWX00nz7ZIkVX');
 
 const Product = require('../models/product');
 const Order = require('../models/order');

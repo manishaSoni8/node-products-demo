@@ -1,6 +1,5 @@
 const path = require('path');
 
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -17,7 +16,7 @@ const shopController = require('./controllers/shop');
 const isAuth = require('./middleware/is-auth');
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb+srv://sonimanisha2003:XR6QEHeRUUh75i5Z@cluster0.gnk6szj.mongodb.net/'
+const MONGODB_URI = 'mongodb+srv://sonimanisha2003:XR6QEHeRUUh75i5Z@cluster0.gnk6szj.mongodb.net/shop'
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -123,8 +122,8 @@ app.use(errorController.get404);
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    app.listen(process.env.PORT || 3000);
-    console.log(`listening at port ${process.env.PORT}`)
+    app.listen(3000);
+    
   })
   .catch(err => {
     console.log(err);
