@@ -93,7 +93,6 @@ exports.getIndex = (req, res, next) => {
 exports.getCart = (req, res, next) => {
   req.user
     .populate('cart.items.productId')
-    .execPopulate()
     .then(user => {
       const products = user.cart.items;
       res.render('shop/cart', {
@@ -143,7 +142,6 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.getCheckout = (req, res, next) => {
   req.user
     .populate('cart.items.productId')
-    .execPopulate()
     .then(user => {
       const products = user.cart.items;
       let total = 0;
@@ -172,7 +170,6 @@ exports.postOrder = (req, res, next) => {
 
   req.user
     .populate('cart.items.productId')
-    .execPopulate()
     .then(user => {  
       user.cart.items.forEach(p => {
         totalSum += p.quantity * p.productId.price;

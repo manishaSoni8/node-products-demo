@@ -1,27 +1,35 @@
 const path = require('path');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const { v4: uuidv4 } = require('uuid');
-const MongoDBStore = require('connect-mongodb-session')(session);
+const MongoStore = require('connect-mongo');
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
+
+
  
 const errorController = require('./controllers/error');
 const shopController = require('./controllers/shop');
 const isAuth = require('./middleware/is-auth');
 const User = require('./models/user');
  
-
-const MONGODB_URI = 'mongodb+srv://sonimanisha2003:XR6QEHeRUUh75i5Z@ac-wp50ign.gnk6szj.mongodb.net/shop?retryWrites=true&w=majority';
  
+const MONGODB_URI = 'mongodb+srv://sonimanisha2003:XR6QEHeRUUh75i5Z@ac-wp50ign.gnk6szj.mongodb.net/shop?retryWrites=true&w=majority';
+
 const app = express();
-const store = new MongoDBStore({
-  uri: MONGODB_URI,
-  collection: 'sessions'
+const store = MongoStore.create({
+  mongoUrl: MONGODB_URI,
+  collectionName: 'sessions'
 });
+ 
+store.on('error', function (error) {
+  console.error('Session Store Error:', error);
+});
+ 
 const csrfProtection = csrf();
  
 const storage = multer.diskStorage({
@@ -52,8 +60,10 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
  
+ 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single('image'));
+ 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
  
@@ -93,6 +103,7 @@ app.use((req, res, next) => {
 app.post('/create-order', isAuth, shopController.postOrder);
  
 app.use(csrfProtection);
+ 
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
@@ -107,7 +118,7 @@ app.use(errorController.get404);
  
 // Global error handler
 app.use((error, req, res, next) => {
-  console.error(error);
+  console.error('Unhandled Error:', error);
   res.status(500).render('500', {
     pageTitle: 'Error!',
     path: '/500',
@@ -115,6 +126,7 @@ app.use((error, req, res, next) => {
   });
 });
  
+// Connect to DB and start server
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,
@@ -126,4 +138,3 @@ mongoose
   .catch(err => {
     console.log('MongoDB connection failed:', err);
   });
- 
