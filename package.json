@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
     "start-server": "node app.js"
-   
   },
   "author": "Maximilian Schwarzmüller",
   "license": "ISC",
@@ -20,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "branch": "^0.0.0",
+    "bson": "^6.10.3",
     "commit": "^0.0.4",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^5.0.0",
@@ -32,7 +32,7 @@
     "express-validator": "^5.3.1",
     "init": "^0.1.2",
     "main": "^1000.0.1",
-    "mongodb": "^3.7.4",
+    "mongodb": "^6.15.0",
     "mongoose": "^5.13.23",
     "multer": "^1.4.4",
     "mysql2": "^1.7.0",
